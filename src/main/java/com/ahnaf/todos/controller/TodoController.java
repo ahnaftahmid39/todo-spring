@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/todos")
 public class TodoController {
 
-  @GetMapping(value = "/all", produces = "application/json")
+  @GetMapping(value = "/all")
   public String getTodos() {
     return new String("No todos for now");
   }
