@@ -1,16 +1,60 @@
 package com.ahnaf.todos.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RestController
-@RequestMapping("/todos")
-public class TodoController {
+import com.ahnaf.todos.dto.TodoDTO;
+import com.ahnaf.todos.service.TodoService;
+import org.springframework.web.bind.annotation.PostMapping;
 
-  @GetMapping(value = "/all")
-  public String getTodos() {
-    return new String("No todos for now");
+@Controller
+@RequestMapping(value = "/todos")
+public class TodoController {
+  @Autowired
+  private TodoService todoService;
+
+  @GetMapping(value = { "/", "" })
+  public String getTodos(Model model) {
+    model.addAttribute("todos", todoService.getAllTodos());
+    return "index";
+  }
+
+  @PostMapping(value = { "/", "" })
+  public String createTodo(@ModelAttribute TodoDTO todo) {
+    if (todo.getCompleted() == null)
+      todo.setCompleted(false);
+    if (todo.getStarred() == null)
+      todo.setStarred(false);
+
+    todoService.createTodo(todo);
+    return "redirect:/todos";
+  }
+
+  @PostMapping(value = { "/update/{id}" })
+  public String updateTodo(@PathVariable("id") Long id, @ModelAttribute TodoDTO updatedTodo) {
+    var currentTodo = todoService.getTodo(id);
+    if (currentTodo == null)
+      return "error";
+    if (updatedTodo.getCompleted() != null)
+      currentTodo.setCompleted(updatedTodo.getCompleted());
+    if (updatedTodo.getStarred() != null)
+      currentTodo.setStarred(updatedTodo.getStarred());
+    todoService.updateTodo(id, currentTodo);
+    return "redirect:/todos";
+  }
+
+  @PostMapping(value = { "/delete/{id}" })
+  public String deleteTodo(@PathVariable("id") Long id) {
+    var todo = todoService.getTodo(id);
+    if (todo == null)
+      return "error";
+    todoService.deleteTodo(id);
+    return "redirect:/todos";
   }
 
 }

@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 public class TodoModel {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "todo_sequence")
   @SequenceGenerator(name = "todo_sequence", sequenceName = "todo_sequence", allocationSize = 1)
   private Long id;
 
@@ -25,7 +25,12 @@ public class TodoModel {
   private String description = "";
 
   public TodoDTO getTodoDTO() {
-    return new TodoDTO(this.getStarred(), this.getCompleted(), this.getDescription());
+    var dto = new TodoDTO();
+    dto.setCompleted(getCompleted());
+    dto.setId(getId());
+    dto.setStarred(getStarred());
+    dto.setDescription(getDescription());
+    return dto;
   }
 
   public TodoModel(TodoDTO dto) {
@@ -33,5 +38,4 @@ public class TodoModel {
     this.setCompleted(dto.getCompleted());
     this.setDescription(dto.getDescription());
   }
-
 }

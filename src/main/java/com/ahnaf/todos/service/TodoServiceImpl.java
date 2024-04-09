@@ -1,6 +1,8 @@
 package com.ahnaf.todos.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,11 @@ public class TodoServiceImpl implements TodoService {
 
   TodoServiceImpl(TodoRepository _todoRepository) {
     this.todoRepository = _todoRepository;
+  }
+
+  @Override
+  public List<TodoDTO> getAllTodos() {
+    return todoRepository.findAll().stream().map((t) -> t.getTodoDTO()).collect(Collectors.toList());
   }
 
   @Override
