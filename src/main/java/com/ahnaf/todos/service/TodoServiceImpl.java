@@ -20,7 +20,11 @@ public class TodoServiceImpl implements TodoService {
 
   @Override
   public List<TodoDTO> getAllTodos() {
-    return todoRepository.findAll().stream().map((t) -> t.getTodoDTO()).collect(Collectors.toList());
+    return todoRepository.findAll()
+        .stream()
+        .sorted((a, b) -> (int) (a.getId() - b.getId()))
+        .map((t) -> t.getTodoDTO())
+        .collect(Collectors.toList());
   }
 
   @Override
