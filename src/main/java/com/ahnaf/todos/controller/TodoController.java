@@ -3,10 +3,12 @@ package com.ahnaf.todos.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ahnaf.todos.dto.TodoDTO;
 import com.ahnaf.todos.service.TodoService;
@@ -35,7 +37,7 @@ public class TodoController {
     return "redirect:/todos";
   }
 
-  @PostMapping(value = { "/update/{id}" })
+  @PostMapping(value = { "/update/{id}" }, headers = "hx-request=true")
   public String updateTodo(@PathVariable("id") Long id, @ModelAttribute TodoDTO updatedTodo) {
     var currentTodo = todoService.getTodo(id);
     if (currentTodo == null)
@@ -48,13 +50,14 @@ public class TodoController {
     return "redirect:/todos";
   }
 
-  @PostMapping(value = { "/delete/{id}" })
+  @DeleteMapping(value = { "/delete/{id}" }, headers = "hx-request=true")
+  @ResponseBody
   public String deleteTodo(@PathVariable("id") Long id) {
     var todo = todoService.getTodo(id);
     if (todo == null)
       return "error";
     todoService.deleteTodo(id);
-    return "redirect:/todos";
+    return "";
   }
 
 }

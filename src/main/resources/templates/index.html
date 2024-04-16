@@ -3,34 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>ki kori ki kori</title>
+    <script
+      th:src="@{/webjars/htmx.org/1.9.11/dist/htmx.min.js}"
+      defer
+    ></script>
   </head>
   <body>
     <h1>TODO app</h1>
     <div class="todo-list-wrapper">
       <ul>
-        <li th:each="todo : ${todos}">
+        <li
+          th:each="todo : ${todos}"
+          th:id="'todo-' + ${todo.id}"
+          th:fragment="'todo-' + ${todo.id}"
+        >
           <span th:text="${todo.description}"></span>
           <span th:text="${todo.id}"></span>
-          <form th:action="@{/todos/update/{id}(id=${todo.id})}" method="post">
-            <button
-              type="submit"
-              name="completed"
-              th:value="${todo.completed ? false : true}"
-              th:text="${todo.completed ? 'completed' : 'mark as done'}"
-            ></button>
-          </form>
-          <form th:action="@{/todos/update/{id}(id=${todo.id})}" method="post">
-            <button
-              type="submit"
-              name="starred"
-              th:value="${todo.starred ? false : true}"
-              th:text="${todo.starred ? '★' : '☆' }"
-            ></button>
-          </form>
-          <form th:action="@{/todos/delete/{id}(id=${todo.id})}" method="post">
-            <button type="submit" name="starred">del</button>
-          </form>
+          <button
+            th:hx-post="@{/todos/update/{id}(id=${todo.id})}"
+            th:id="'btn-completed' + ${todo.id}"
+            th:fragment="'btn-completed' + ${todo.id}"
+            hx-swap-oob="true"
+            name="completed"
+            th:value="${todo.completed ? false : true}"
+            th:text="${todo.completed ? 'completed' : 'mark as done'}"
+          ></button>
+          <!-- <form th:action="@{/todos/update/{id}(id=${todo.id})}" method="post"> -->
+          <button
+            th:hx-post="@{/todos/update/{id}(id=${todo.id})}"
+            th:id="'btn-starred' + ${todo.id}"
+            th:fragment="'btn-starred' + ${todo.id}"
+            hx-swap-oob="true"
+            name="starred"
+            th:value="${todo.starred ? false : true}"
+            th:text="${todo.starred ? '★' : '☆' }"
+          ></button>
+          <button
+            th:hx-delete="@{/todos/delete/{id}(id=${todo.id})}"
+            hx-target="closest li"
+            hx-swap="outerHTML swap:1s"
+            hx-trigger="click"
+            th:fragment="'btn-delete' + ${todo.id}"
+            th:text="Delete"
+          ></button>
         </li>
       </ul>
       <form th:action="@{/todos}" method="post">
@@ -43,4 +59,5 @@
       </form>
     </div>
   </body>
+  <!-- <script defer src="https://unpkg.com/htmx.org@1.9.11"></script> -->
 </html>
