@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ahnaf.todos.dto.TodoDTO;
 import com.ahnaf.todos.service.TodoService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping(value = "/todos")
@@ -48,6 +49,11 @@ public class TodoController {
       currentTodo.setStarred(updatedTodo.getStarred());
     todoService.updateTodo(id, currentTodo);
     return "redirect:/todos";
+  }
+
+  @GetMapping(value = { "/something" }, headers = "hx-request=true")
+  public String getMethodName() {
+    return "components/blank";
   }
 
   @DeleteMapping(value = { "/delete/{id}" }, headers = "hx-request=true")
