@@ -1,0 +1,21 @@
+<html xmlns="https://www.thymeleaf.org">
+  <!-- response: custom-reponses/todo-add :: todo-add-response -->
+  <form
+    th:hx-post="@{/}"
+    th:id="todo-form"
+    th:fragment="todo-form"
+    hx-trigger="submit"
+    hx-target="#todo-list"
+    hx-swap="beforeend"
+    hx-select="li"
+    hx-swap-oob="true"
+    hx-select-oob="form"
+  >
+    <input
+      name="description"
+      type="text"
+      placeholder="Description for new todo"
+    />
+    <button>add</button>
+  </form>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "todo-spring",
+  "version": "1.0.0",
+  "description": "Simple TODO app with thymeleaf",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:tailwind": "NODE_ENV=production tailwindcss -i src/main/resources/static/css/styles.css -o target/classes/static/css/styles.css",
+    "watch:tailwind": "NODE_ENV=development tailwindcss -i src/main/resources/static/css/styles.css -o target/classes/static/css/styles.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
+  }
+}

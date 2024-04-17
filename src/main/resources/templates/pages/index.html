@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ki kori ki kori</title>
+    <script
+      th:src="@{/webjars/htmx.org/1.9.11/dist/htmx.min.js}"
+      defer
+    ></script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  </head>
+  <body class="bg-green-100">
+    <h1 class="text-2xl text-blue-400">TODO app</h1>
+    <div class="todo-list-wrapper">
+      <th:block
+        th:replace="~{components/todo/todo-list :: todo-list}"
+      ></th:block>
+      <th:block th:replace="~{components/todo/todo-form :: todo-form}">
+      </th:block>
+    </div>
+  </body>
+</html>

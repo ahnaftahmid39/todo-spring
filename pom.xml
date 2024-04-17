@@ -73,7 +73,72 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>com.maciejwalkowiak.paseq</groupId>
+				<artifactId>paseq-maven-plugin</artifactId>
+				<version>0.1.1</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<task>
+									<exec>
+										<directory>./</directory>
+										<command>npm install</command>
+									</exec>
+								</task>
+								<task>
+									<exec>
+										<directory>./</directory>
+										<command>npm run build:tailwind</command>
+									</exec>
+								</task>
+							</tasks>
+						</configuration>
+					</execution>
+
+
+					<execution>
+						<id>dev</id>
+						<!-- configuration for running in dev mode with ./mvnw paseq:exec@dev -->
+						<configuration>
+							<tasks>
+								<task>
+									<exec>
+										<directory>./</directory>
+										<command>npm install</command>
+									</exec>
+								</task>
+								<task>
+									<async>true</async>
+									<exec>
+										<directory>./</directory>
+										<command>npm run watch:tailwind</command>
+									</exec>
+								</task>
+								<task>
+									<goals>spring-boot:run</goals>
+								</task>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>**/tailwind.css</exclude>
+				</excludes>
+			</resource>
+		</resources>
 	</build>
 
 </project>

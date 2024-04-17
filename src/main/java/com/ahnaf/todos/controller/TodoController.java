@@ -8,15 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ahnaf.todos.dto.TodoDTO;
 import com.ahnaf.todos.service.TodoService;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(value = "/todos")
+@RequestMapping(value = { "/", "" })
 public class TodoController {
   @Autowired
   private TodoService todoService;
@@ -24,22 +22,23 @@ public class TodoController {
   @GetMapping(value = { "/", "" })
   public String getTodos(Model model) {
     model.addAttribute("todos", todoService.getAllTodos());
-    return "index";
+    return "pages/index";
   }
 
   @PostMapping(value = { "/", "" })
-  public String createTodo(@ModelAttribute TodoDTO todo) {
+  public String createTodo(@ModelAttribute TodoDTO todo, Model model) {
     if (todo.getCompleted() == null)
       todo.setCompleted(false);
     if (todo.getStarred() == null)
       todo.setStarred(false);
 
-    todoService.createTodo(todo);
-    return "redirect:/todos";
+    var createdTodo = todoService.createTodo(todo);
+    model.addAttribute("todo", createdTodo);
+    return "responses/todo-add-response :: todo-add-response";
   }
 
   @PostMapping(value = { "/update/{id}" }, headers = "hx-request=true")
-  public String updateTodo(@PathVariable("id") Long id, @ModelAttribute TodoDTO updatedTodo) {
+  public String updateTodo(@PathVariable("id") Long id, @ModelAttribute TodoDTO updatedTodo, Model model) {
     var currentTodo = todoService.getTodo(id);
     if (currentTodo == null)
       return "error";
@@ -48,22 +47,18 @@ public class TodoController {
     if (updatedTodo.getStarred() != null)
       currentTodo.setStarred(updatedTodo.getStarred());
     todoService.updateTodo(id, currentTodo);
-    return "redirect:/todos";
-  }
 
-  @GetMapping(value = { "/something" }, headers = "hx-request=true")
-  public String getMethodName() {
-    return "components/blank";
+    model.addAttribute("todo", currentTodo);
+    return "components/todo/todo-list-item :: todo-item";
   }
 
   @DeleteMapping(value = { "/delete/{id}" }, headers = "hx-request=true")
-  @ResponseBody
   public String deleteTodo(@PathVariable("id") Long id) {
     var todo = todoService.getTodo(id);
     if (todo == null)
       return "error";
     todoService.deleteTodo(id);
-    return "";
+    return "components/utils/utils :: empty";
   }
 
 }

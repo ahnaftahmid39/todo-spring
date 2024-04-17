@@ -1,0 +1,10 @@
+<html xmlns:th="https://www.thymeleaf.org">
+  <!-- response of adding todo -->
+  <th:block th:fragment="todo-add-response">
+    <th:blocK
+      th:replace="~{components/todo/todo-list-item :: todo-item}"
+    ></th:blocK>
+    <th:blocK th:replace="~{components/todo/todo-form :: todo-form}">
+    </th:blocK>
+  </th:block>
+</html>

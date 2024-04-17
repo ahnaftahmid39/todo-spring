@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>todo list component</title>
+  </head>
+  <body>
+    <ul th:fragment="todo-list" th:id="todo-list">
+      <th:block th:each="todo : ${todos}">
+        <th:block
+          th:replace="~{components/todo/todo-list-item :: todo-item}"
+        ></th:block>
+      </th:block>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<html xmlns="https://www.thymeleaf.org">
+  <li th:fragment="todo-item" class="p-2 flex gap-2">
+    <span th:text="${todo.description}"></span>
+    <!-- response: components/todo/todo-list-item :: todo-item -->
+    <button
+      class="py-0.5 px-2 border-2 border-green-300 rounded-md"
+      th:hx-post="@{/update/{id}(id=${todo.id})}"
+      th:id="'btn-completed' + ${todo.id}"
+      th:fragment="'btn-completed'"
+      hx-target="closest li"
+      hx-swap="outerHTML"
+      name="completed"
+      th:value="${todo.completed ? false : true}"
+      th:text="${todo.completed ? 'completed' : 'mark as done'}"
+    ></button>
+    <!-- response: components/todo/todo-list-item :: todo-item -->
+    <button
+      th:class="'py-0.5 px-2 border-2 border-yellow-400 rounded-md ' + ${todo.starred ? 'text-yellow-400' : 'text-current'}"
+      th:hx-post="@{/update/{id}(id=${todo.id})}"
+      th:id="'btn-starred' + ${todo.id}"
+      th:fragment="'btn-starred'"
+      hx-target="closest li"
+      hx-swap="outerHTML"
+      name="starred"
+      th:value="${todo.starred ? false : true}"
+      th:text="${todo.starred ? '★' : '☆' }"
+    ></button>
+    <!-- response: componentns/utils/utils :: empty -->
+    <button
+      class="py-0.5 px-2 border-2 border-red-300 rounded-md"
+      th:hx-delete="@{/delete/{id}(id=${todo.id})}"
+      hx-target="closest li"
+      hx-swap="outerHTML"
+      hx-trigger="click"
+      th:fragment="'btn-delete' + ${todo.id}"
+      th:text="Delete"
+    ></button>
+  </li>
+</html>
