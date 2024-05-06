@@ -34,7 +34,7 @@ public class TodoController {
 
     var createdTodo = todoService.createTodo(todo);
     model.addAttribute("todo", createdTodo);
-    return "responses/todo-add-response :: todo-add-response";
+    return "custom-responses/todo-add :: todo-add-response";
   }
 
   @PostMapping(value = { "/update/{id}" }, headers = "hx-request=true")

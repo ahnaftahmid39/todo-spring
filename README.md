@@ -7,3 +7,7 @@ Simple TODO app with thymeleaf
 - Create a db in postgres named "todos"
 - Configure username and password in application.properties
 - Run with `mvn spring-boot:run -Dspring-boot.run.profiles=local` in the terminal
+
+## Demo
+
+- [youtube link](https://youtu.be/_F1QfM7Iv_U)
